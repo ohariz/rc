@@ -20,5 +20,5 @@
 	st = status
   fl = ls-files -o -m --exclude-standard
   prettier = !cd -- ${GIT_PREFIX:-.} && yarn prettier --write $(git fl)
-  vim = !vim $(git fl)
   jest = !cd -- ${GIT_PREFIX:-.} && git fl | sed 's/\\.js/\\.test\\.js/g' | xargs ls -d 2>/dev/null | xargs yarn jest
+  vim = !vim $(git fl)
