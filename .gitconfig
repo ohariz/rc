@@ -1,0 +1,24 @@
+[user]
+	email = ohariz@pinterest.com
+	name = Oussama Hariz
+[pager]
+	branch = false
+[core]
+	pager = less -S
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
+	n = "!f() { git checkout master && git clean -f && git pull origin master && git checkout -b \"$1\"; }; f"
+	c = !git add . && git commit -m
+	ca = !git add . && git commit --amend
+	cu = !git branch | grep -v "master" | xargs git branch -D 
+  #	mm = "!f() { git checkout master && git clean -f && git pull origin master && git checkout \"$1\" && git merge master; }; f"
+  gud = !git checkout -- . && git clean -df
+  rbm = "!f() { tmp=`git rev-parse --abbrev-ref HEAD`; git checkout master && git pull && git checkout $tmp && git rebase master; }; f"
+  pm = !git checkout master && git pull
+	co = checkout
+	br = branch
+	st = status
+  fl = ls-files -o -m --exclude-standard
+  prettier = !cd -- ${GIT_PREFIX:-.} && yarn prettier --write $(git fl)
+  vim = !vim $(git fl)
+  jest = !cd -- ${GIT_PREFIX:-.} && git fl | sed 's/\\.js/\\.test\\.js/g' | xargs ls -d 2>/dev/null | xargs yarn jest
