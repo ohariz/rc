@@ -18,7 +18,8 @@
 	co = checkout
 	br = branch
 	st = status
-  fl = ls-files -o -m --exclude-standard
+  #fl = ls-files -o -m --exclude-standard
+  fl = !git diff --name-only master | sed 's/webapp.\\(.*\\)$/\\1/p'
   prettier = !cd -- ${GIT_PREFIX:-.} && yarn prettier --write $(git fl)
   jest = !cd -- ${GIT_PREFIX:-.} && ls -d 2>/dev/null $(git fl | grep '.test.js') $(git fl | sed 's/\\.js/\\.test\\.js/g') | xargs yarn jest
-  vim = !vim $(git fl)
+  vim = !cd -- ${GIT_PREFIX:-.} && vim $(git fl)
