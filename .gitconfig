@@ -7,19 +7,21 @@
 	pager = less -S
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
-	n = "!f() { git checkout master && git clean -f && git pull origin master && git checkout -b \"$1\"; }; f"
 	c = !git add . && git commit -m
 	ca = !git add . && git commit --amend
-	cu = !git branch | grep -v "master" | xargs git branch -D 
-  #	mm = "!f() { git checkout master && git clean -f && git pull origin master && git checkout \"$1\" && git merge master; }; f"
+  cl = fetch --prune --all
+	cu = "!f() { git branch | grep -v \"master\" | xargs git branch -D; git cl; }; f"
+	n = "!f() { git checkout master && git pull origin master && git cl && git checkout -b \"ohariz/$1\"; }; f"
+	ni = "!f() { git checkout master && git checkout -b \"ohariz/$1\"; }; f"
   gud = !git checkout -- . && git clean -df
   rbm = "!f() { tmp=`git rev-parse --abbrev-ref HEAD`; git checkout master && git pull && git checkout $tmp && git rebase master; }; f"
   pm = !git checkout master && git pull
 	co = checkout
 	br = branch
 	st = status
-  #fl = ls-files -o -m --exclude-standard
-  fl = !git diff --name-only master | sed 's/webapp.\\(.*\\)$/\\1/p'
+  kill = push origin -d
+  fl = !git diff-index --name-only --diff-filter=ACM --relative=webapp -r HEAD~ | grep .js$
   prettier = !cd -- ${GIT_PREFIX:-.} && yarn prettier --write $(git fl)
-  jest = !cd -- ${GIT_PREFIX:-.} && ls -d 2>/dev/null $(git fl | grep '.test.js') $(git fl | sed 's/\\.js/\\.test\\.js/g') | xargs yarn jest
+  jest = !cd -- ${GIT_PREFIX:-.} && ls -d 2>/dev/null $(git fl | grep '.test.js') $(git fl | sed 's/\\.js/\\.test\\.js/g') | uniq | xargs yarn jest
   vim = !cd -- ${GIT_PREFIX:-.} && vim $(git fl)
+  monday = !git co master && git pull && git cl && git prune && git gc && yarn
